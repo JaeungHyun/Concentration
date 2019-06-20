@@ -19,7 +19,7 @@ struct Card {
 	static var identifierFactory = 0
 	
 	static func getUniqueIdentifier() -> Int {
-		identifierFactory += 1
+		identifierFactory += 1 // 정적메소드 안이라서 Card.identifierFactory라 적지 않아도 된다.
 		return identifierFactory
 	}
 	

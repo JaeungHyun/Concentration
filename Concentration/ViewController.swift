@@ -10,8 +10,11 @@ import UIKit
 class ViewController: UIViewController {
 	
 	lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
+    // lazy initializer
+    // lazy property는 didSet을 가질 수 없음.
 	
 	var flipCount = 0 {
+        // observer patterns
 		didSet {
 			flipCountLabel.text = "Flips: \(flipCount)"
 		}
@@ -33,8 +36,8 @@ class ViewController: UIViewController {
 	}
 	
 	func updateViewFromModel() {
-		for index in cardButtons.indices {
-			let button = cardButtons[index]
+        for index in cardButtons.indices { // indices : countable range
+ 			let button = cardButtons[index]
 			let card = game.cards[index]
 			if card.isFaceUp {
 				button.setTitle(emoji(for: card), for: UIControl.State.normal)
@@ -47,17 +50,44 @@ class ViewController: UIViewController {
 		
 	}
 	
-	var emojiChoices = ["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"]
+    var emojiChoices = [String]()
 	
-	var emoji = [Int: String]()
+    func chooseTheme() {
+        let theme = ["sprots" : ["⚽️", "🏀", "🏈","⚾️","🥎","🎾","🏐"],
+                     "halloween" : ["🦇", "😈", "🎃", "👻", "🍭", "🍬"],
+                     "cars" : ["🚗","🚕","🚌","🚙","🚎","🏎","🚓"],
+                     "faces" : ["😀","😇","🤪","😎","🥶","🤡"],
+                     "animals" : ["🐶","🐱","🐭","🐹","🐰","🦊"],
+                     "weather" : ["❄️","⛈","🌤","☀️","☂️","☃️"]]
+        let themeKeys = Array(theme.keys)
+        let themeIndex = Int(arc4random_uniform(UInt32(themeKeys.count)))
+        emojiChoices = Array(theme.values)[themeIndex]
+    }
+    
+	var emoji = [Int: String]()  // Dictionary<Int, String>()
 	
 	func emoji(for card: Card) -> String {
 		if emoji[card.identifier] == nil, emojiChoices.count > 0 {
 			let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count - 1)))
 			emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
 		}
-		return emoji[card.identifier] ?? "?"
+		return emoji[card.identifier] ?? "?" // emoji[card.identifier]가 optional이면 값을 리턴, 없으면 "?"을 리턴
 	}
+    
+    
+    @IBAction func startNewGame(_ sender: Any) {
+        flipCount = 0
+        emojiChoices += emoji.values
+        emoji = [Int:String]()
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
+            game.cards[index].isFaceUp = false
+            game.cards[index].isMatched = false
+            game.indexOfOneAndOnlyFaceUpCard = nil
+        }
+        chooseTheme()
+    }
 }
 
 

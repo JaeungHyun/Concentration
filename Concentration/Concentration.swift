@@ -27,7 +27,7 @@ class Concentration {
 				indexOfOneAndOnlyFaceUpCard = nil	// not one and only ...
 			} else {
 				// either no card or two cards face up
-				for flipdownIndex in cards.indices {
+                for flipdownIndex in cards.indices {  // indices : coutable value
 					cards[flipdownIndex].isFaceUp = false
 				}
 				cards[index].isFaceUp = true
@@ -38,11 +38,17 @@ class Concentration {
 	}
 	
 	init(numberOfPairsOfCards: Int) {
+        // for loop에서 in 다음에 오는 것은 시퀀스면 된다.
 		for _ in 1...numberOfPairsOfCards {
 			let card = Card()
 			cards += [card, card]
 		}
-	//	TODO: Shuffle the cards
+        
+        //	TODO: Shuffle the cards
+        for _ in 1...cards.count {
+            let randomIndex = Int(arc4random_uniform(UInt32(cards.count)))
+            cards.swapAt(0, randomIndex)
+        }
 	}
 	
 }
