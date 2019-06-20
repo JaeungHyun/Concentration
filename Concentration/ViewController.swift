@@ -40,7 +40,7 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(game.score)"
 			updateViewFromModel()
 		} else {
-			print("choosen card was not in cardButtons")
+			print("chosen card was not in cardButtons")
 		}
 	}
 	
