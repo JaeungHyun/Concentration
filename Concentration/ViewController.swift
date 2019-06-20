@@ -21,14 +21,23 @@ class ViewController: UIViewController {
 	}
 	
 	@IBOutlet weak var flipCountLabel: UILabel!
+    
+    @IBOutlet weak var scoreLabel: UILabel!
 	
 	@IBOutlet var cardButtons: [UIButton]!
 	
+    var alreadyChoseTheme = false
 	
 	@IBAction func touchCard(_ sender: UIButton) {
+        if alreadyChoseTheme == false {
+            chooseTheme()
+            alreadyChoseTheme = true
+        }
+        
 		flipCount += 1
 		if let cardNumber = cardButtons.firstIndex(of: sender) {
 			game.chooseCard(at: cardNumber)
+            scoreLabel.text = "Score: \(game.score)"
 			updateViewFromModel()
 		} else {
 			print("choosen card was not in cardButtons")
@@ -67,6 +76,7 @@ class ViewController: UIViewController {
 	var emoji = [Int: String]()  // Dictionary<Int, String>()
 	
 	func emoji(for card: Card) -> String {
+        game.chosenBefore = Array(emoji.keys)
 		if emoji[card.identifier] == nil, emojiChoices.count > 0 {
 			let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count - 1)))
 			emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
@@ -74,9 +84,12 @@ class ViewController: UIViewController {
 		return emoji[card.identifier] ?? "?" // emoji[card.identifier]가 optional이면 값을 리턴, 없으면 "?"을 리턴
 	}
     
+
     
     @IBAction func startNewGame(_ sender: Any) {
         flipCount = 0
+        game.score = 0
+        scoreLabel.text = "Score: 0"
         emojiChoices += emoji.values
         emoji = [Int:String]()
         for index in cardButtons.indices {
