@@ -9,9 +9,15 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-	lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
+	lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     // lazy initializer
     // lazy property는 didSet을 가질 수 없음.
+    
+    var numberOfPairsOfCards: Int { // Computed property
+        get {
+            return (cardButtons.count+1) / 2
+        }
+    }
 	
 	var flipCount = 0 {
         // observer patterns
@@ -21,9 +27,7 @@ class ViewController: UIViewController {
 	}
 	
 	@IBOutlet weak var flipCountLabel: UILabel!
-    
     @IBOutlet weak var scoreLabel: UILabel!
-	
 	@IBOutlet var cardButtons: [UIButton]!
 	
     var alreadyChoseTheme = false
@@ -35,6 +39,7 @@ class ViewController: UIViewController {
         }
         
 		flipCount += 1
+        
 		if let cardNumber = cardButtons.firstIndex(of: sender) {
 			game.chooseCard(at: cardNumber)
             scoreLabel.text = "Score: \(game.score)"
@@ -83,8 +88,6 @@ class ViewController: UIViewController {
 		}
 		return emoji[card.identifier] ?? "?" // emoji[card.identifier]가 optional이면 값을 리턴, 없으면 "?"을 리턴
 	}
-    
-
     
     @IBAction func startNewGame(_ sender: Any) {
         flipCount = 0
