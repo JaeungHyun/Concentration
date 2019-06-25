@@ -9,7 +9,8 @@ import UIKit
 
 class ViewController: UIViewController {
 	
-	lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+	private lazy var game =
+        Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     // lazy initializer
     // lazy property는 didSet을 가질 수 없음.
     
@@ -19,16 +20,16 @@ class ViewController: UIViewController {
         }
     }
 	
-	var flipCount = 0 {
+	private(set) var flipCount = 0 {
         // observer patterns
 		didSet {
 			flipCountLabel.text = "Flips: \(flipCount)"
 		}
 	}
 	
-	@IBOutlet weak var flipCountLabel: UILabel!
-    @IBOutlet weak var scoreLabel: UILabel!
-	@IBOutlet var cardButtons: [UIButton]!
+	@IBOutlet private weak var flipCountLabel: UILabel!
+    @IBOutlet private var scoreLabel: UILabel!
+	@IBOutlet private var cardButtons: [UIButton]!
 	
     var alreadyChoseTheme = false
 	
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
 		
 	}
 	
-    var emojiChoices = [String]()
+    private var emojiChoices = [String]()
 	
     func chooseTheme() {
         let theme = ["sprots"    : ["⚽️","🏀","🏈","⚾️","🥎","🎾","🏐"],
@@ -78,13 +79,12 @@ class ViewController: UIViewController {
         emojiChoices = Array(theme.values)[themeIndex]
     }
     
-	var emoji = [Int: String]()  // Dictionary<Int, String>()
+	private var emoji = [Int: String]()  // Dictionary<Int, String>()
 	
-	func emoji(for card: Card) -> String {
+	private func emoji(for card: Card) -> String {
         game.chosenBefore = Array(emoji.keys)
 		if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-			let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count - 1)))
-			emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+			emoji[card.identifier] = emojiChoices.remove(at: emojiChoices.count.arc4random)
 		}
 		return emoji[card.identifier] ?? "?" // emoji[card.identifier]가 optional이면 값을 리턴, 없으면 "?"을 리턴
 	}
@@ -103,5 +103,18 @@ class ViewController: UIViewController {
             game.indexOfOneAndOnlyFaceUpCard = nil
         }
         chooseTheme()
+    }
+}
+
+extension Int {
+    var arc4random: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else {
+            return 0
+        }
+        
     }
 }
