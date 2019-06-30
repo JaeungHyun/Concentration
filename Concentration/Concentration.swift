@@ -39,18 +39,11 @@ struct Concentration {
 			if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
                 // 이미 선택된 카드와 다른 카드이면
 				// check if cards match
-				if cards[matchIndex].identifier == cards[index].identifier {
+				if cards[matchIndex] == cards[index] {
                     // 같은 종류의 카드이면?
 					cards[matchIndex].isMatched = true
 					cards[index].isMatched = true
                     score += 2
-                } else {
-                    // 다른 종류의 카드이면?
-                    for chosenIdentifier in chosenBefore.indices {
-                        if cards[index].identifier == chosenBefore[chosenIdentifier] || cards[matchIndex].identifier == chosenBefore[chosenIdentifier] {
-                            score -= 1
-                        }
-                    }
                 }
 				cards[index].isFaceUp = true
 			} else {

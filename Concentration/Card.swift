@@ -2,11 +2,17 @@ import Foundation
 
 
 // 구조체는 값 타입
-struct Card {
+struct Card: Hashable {
+
+    func hash(into hasher: inout Hasher) -> Int { return identifier } // 4.1 부터 hashValue가 아니라 func hash(into:)로 변경, hashValue is deprecated
+    
+    static func ==(lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
 	
 	var isFaceUp = false
 	var isMatched = false
-	var identifier: Int
+	private var identifier: Int
 	
 	static var identifierFactory = 0
 	
