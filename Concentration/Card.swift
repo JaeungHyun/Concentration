@@ -1,11 +1,3 @@
-//
-//  Card.swift
-//  Lecture 2 - Concentration
-//
-//  Created by Michel Deiman on 13/11/2017.
-//  Copyright © 2017 Michel Deiman. All rights reserved.
-//
-
 import Foundation
 
 

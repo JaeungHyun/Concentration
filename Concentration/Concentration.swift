@@ -1,20 +1,14 @@
-//
-//  Concentration.swift
-//  Lecture 2 - Concentration
-//
-//  Created by Michel Deiman on 13/11/2017.
-//  Copyright © 2017 Michel Deiman. All rights reserved.
-//
 
 import Foundation
 
 
 // 클래스는 참조 타입
-class Concentration {
+// 구조체는 값 타입
+struct Concentration {
 	
 	var cards = [Card]()
     
-    private var indexOfOneAndOnlyFaceUpCard: Int? {
+    var indexOfOneAndOnlyFaceUpCard: Int? {
         get {
             var foundIndex: Int?
             for index in cards.indices {
@@ -38,7 +32,8 @@ class Concentration {
     var score = 0
     var chosenBefore = [Int]()
 	
-	func chooseCard(at index: Int) {
+    // 구조체에서 일반적으로 프로퍼티 값을 바꿀 수 없음. 값을 바꾸고 싶으면 mutating을 사용해서 변경한다고 알려줘야함
+	mutating func chooseCard(at index: Int) {
         assert(cards.indices.contains(index), "Concetration.chooseCard(at: \(index)): chosen index not in the cards")
 		if !cards[index].isMatched { // cards[index]의 isMatched가 false일 때
 			if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {

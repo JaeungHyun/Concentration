@@ -1,10 +1,3 @@
-//  ViewController.swift
-//  Concentration
-//
-//  Coding as done by Instructor CS193P Michel Deiman on 11/11/2017.
-//  Copyright © 2017 Michel Deiman. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
